@@ -1,6 +1,6 @@
 ﻿using SocialNetwork.DAL;
-using SocialNetwork.Models;
-
+using SocialNetwork.Entities;
+using System.Linq;
 namespace SocialNetwork.Services
 {
     public class UserService
@@ -16,6 +16,11 @@ namespace SocialNetwork.Services
                 }
             }
             return null;
+        }
+        public User GetUserById(int id)
+        {
+            User user = db.Users.Where(x => x.Id == id).FirstOrDefault();
+            return user;
         }
     }
 }

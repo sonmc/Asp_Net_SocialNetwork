@@ -1,4 +1,5 @@
-﻿using SocialNetwork.Models; 
+﻿
+using SocialNetwork.Entities;
 using System.Data.Entity; 
 
 namespace SocialNetwork.DAL

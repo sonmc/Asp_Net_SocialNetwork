@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
+﻿ 
 using System.Web.Mvc;
-using SocialNetwork.Constant;
-using SocialNetwork.DAL;
-using SocialNetwork.Models;
+using SocialNetwork.Constant; 
+using SocialNetwork.Entities;
 using SocialNetwork.Services;
 
 namespace SocialNetwork.Controllers
@@ -30,15 +23,11 @@ namespace SocialNetwork.Controllers
         public ActionResult Login(string email, string pwd)
         {
             User user = service.Login(email, pwd);
-            if (user == null)
-            {
-                return RedirectToAction("Login");
-            }
-            if (user.Role == Common .ADMIN_ROLE)
+            if (user != null)
             {
                 return RedirectToAction("Index");
-            }
-            return RedirectToAction("");
+            } 
+            return RedirectToAction("Login");
         }
     }
 }
