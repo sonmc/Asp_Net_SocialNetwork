@@ -1,0 +1,54 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title -Social Network Application</title>
+    <link href="~/Content/all.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/ruang-admin.css" rel="stylesheet" />
+
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="sidebar-brand-text mx-3">Social Network</div>
+            </a>
+
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">
+                Management
+            </div> 
+            <li class="nav-item">
+                <a class="nav-link" href="~/Admin/Index">
+                    <span>News Management</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/User/Index">
+                    <span>Users Management</span>
+                </a>
+            </li>
+        </ul>
+        <!-- Sidebar -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            @RenderBody() 
+        </div>
+    </div>
+
+    <!-- Scroll to top -->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <script src="~/Scripts/jquery.min.js"></script> 
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/jquery.easing.min.js"></script> 
+    <script src="~/Scripts/ruang-admin.js"></script>
+    <script src="~/Scripts/Chart.min.js"></script> 
+    <script src="~/Scripts/chart-area-demo.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
