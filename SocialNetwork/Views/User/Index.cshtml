@@ -54,18 +54,15 @@
                                     </a>
                                     <div class="profile-dropdown">
                                         <div class="profile-head">
-                                            <h5 class="name"><a href="#">Madison Howard</a></h5>
-                                            <a class="mail" href="#">mailnam@mail.com</a>
+                                            <h5 class="name"><a href="#">@ViewBag.CurrentUser.FirstName @ViewBag.CurrentUser.LastName</a></h5>
+                                            <a class="mail" href="#">@ViewBag.CurrentUser.Email</a>
                                         </div>
                                         <div class="profile-body">
                                             <ul>
                                                 <li><a href="profile.html"><i class="flaticon-user"></i>Profile</a></li>
-                                                <li><a href="#"><i class="flaticon-message"></i>Inbox</a></li>
-                                                <li><a href="#"><i class="flaticon-document"></i>Activity</a></li>
                                             </ul>
                                             <ul>
-                                                <li><a href="#"><i class="flaticon-settings"></i>Setting</a></li>
-                                                <li><a href="signup.html"><i class="flaticon-unlock"></i>Sing out</a></li>
+                                                <li><a href="@Url.Action("Logout", "User")"><i class="flaticon-unlock"></i>Sing out</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -264,10 +261,10 @@
                                 <div class="profile-banner">
                                     <figure class="profile-banner-small">
                                         <a href="profile.html">
-                                            <img src="https://salt.tikicdn.com/ts/tmp/9a/7e/db/bd7f0652d2a0a04f5f557e75048291b5.jpg" alt="background">
+                                            <img class="sm-background" src="https://salt.tikicdn.com/ts/tmp/9a/7e/db/bd7f0652d2a0a04f5f557e75048291b5.jpg" alt="background">
                                         </a>
                                         <a href="profile.html" class="profile-thumb-2">
-                                            <img src="@ViewBag.CurrentUser.Avatar" alt="current avatar">
+                                            <img src="@ViewBag.CurrentUser.Avatar" alt="Current avatar">
                                         </a>
                                     </figure>
                                     <div class="profile-desc text-center">
@@ -374,8 +371,8 @@
                                         <span></span>
                                         <div class="post-settings arrow-shape">
                                             <ul>
-                                                <li><button>edit post</button></li>
-                                                <li><button>embed adda</button></li>
+                                                <li><a href="@Url.Action("Update","User", new { id = @item.Id })">Edit</a></li>
+                                                <li><a href="@Url.Action("Delete","User", new { id = @item.Id })">Delete</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -426,46 +423,27 @@
                                 <h4 class="widget-title">Có thể bạn quen ?</h4>
                                 <div class="widget-body">
                                     <ul class="like-page-list-wrapper">
-                                        <li class="unorder-list">
-                                            <!-- profile picture end -->
-                                            <div class="profile-thumb">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="assets/images/profile/profile-small-33.jpg" alt="friend around">
-                                                    </figure>
-                                                </a>
-                                            </div>
-                                            <!-- profile picture end -->
+                                        @foreach (var item in @ViewBag.FriendAround)
+                                        {
+                                            <li class="unorder-list">
+                                                <div class="profile-thumb">
+                                                    <a href="#">
+                                                        <figure class="profile-thumb-small">
+                                                            <img src="@item.Avatar" alt="profile picture">
+                                                        </figure>
+                                                    </a>
+                                                </div>
 
-                                            <div class="unorder-list-info">
-                                                <h3 class="list-title"><a href="#">Ammeya Jakson</a></h3>
-                                                <p class="list-subtitle"><a href="#">10 mutual</a></p>
-                                            </div>
-                                            <button class="like-button">
-                                                <img class="heart" src="assets/images/icons/heart.png" alt="">
-                                                <img class="heart-color" src="assets/images/icons/heart-color.png" alt="">
-                                            </button>
-                                        </li>
-                                        <li class="unorder-list">
-                                            <!-- profile picture end -->
-                                            <div class="profile-thumb">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="assets/images/profile/profile-small-30.jpg" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
-                                            <!-- profile picture end -->
-
-                                            <div class="unorder-list-info">
-                                                <h3 class="list-title"><a href="#">Jashon Muri</a></h3>
-                                                <p class="list-subtitle"><a href="#">2 mutual</a></p>
-                                            </div>
-                                            <button class="like-button active">
-                                                <img class="heart" src="assets/images/icons/heart.png" alt="">
-                                                <img class="heart-color" src="assets/images/icons/heart-color.png" alt="">
-                                            </button>
-                                        </li>
+                                                <div class="unorder-list-info">
+                                                    <h3 class="list-title"><a href="#">@item.FirstName @item.LastName</a></h3>
+                                                    <p class="list-subtitle"><a href="#">2 mutual</a></p>
+                                                </div>
+                                                <button class="like-button">
+                                                    <img class="heart" src="assets/images/icons/heart.png" alt="">
+                                                    <img class="heart-color" src="assets/images/icons/heart-color.png" alt="">
+                                                </button>
+                                            </li>
+                                        }
                                     </ul>
                                 </div>
                             </div>
@@ -491,7 +469,7 @@
                                                     <h6 class="author">Jon Wilime</h6>
                                                     <p>Many desktop publishing</p>
                                                 </div>
-                                            </li> 
+                                            </li>
                                         </ul>
                                     </div>
 

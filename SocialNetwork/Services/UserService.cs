@@ -1,5 +1,6 @@
 ﻿using SocialNetwork.DAL;
 using SocialNetwork.Entities;
+using System.Collections.Generic;
 using System.Linq;
 namespace SocialNetwork.Services
 {
@@ -21,6 +22,10 @@ namespace SocialNetwork.Services
         {
             User user = db.Users.Where(x => x.Id == id).FirstOrDefault();
             return user;
+        }
+        public List<User> Get()
+        {
+            return db.Users.ToList();
         }
     }
 }

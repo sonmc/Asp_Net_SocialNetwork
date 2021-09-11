@@ -1,31 +1,4 @@
-/*------------------------------------------------------------------
-Table of content
--------------------
-1. Start Header Area
-2. slider area start
-3. features area css start
-4. hot deals area css start
-5. product
-6. categories area
-7. testimonial
-8. blog
-9. shop grid view
-10. shop list view
-11. product details
-12. checkout
-13. cart
-14. wishlist
-15. my account
-16. compare
-17. login register
-18. about us
-19. contact us
-20. banner
-21. modal
-22. sidebar
-23. footer
--------------------------------------------------------------------*/
-/*------ Typography Style Start ------*/
+
 body {
     color: #444444;
     line-height: 1.7;
@@ -1436,7 +1409,7 @@ textarea {
     border: none;
     border-radius: 0;
     padding: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     -webkit-box-shadow: 0px 1px 15px 0px rgba(51, 51, 51, 0.2);
     box-shadow: 0px 1px 15px 0px rgba(51, 51, 51, 0.2);
 }
@@ -1462,7 +1435,7 @@ textarea {
 }
 
 .card.widget-item {
-    padding: 25px;
+    padding: 21px;
 }
 
 .share-box-inner {
@@ -1910,18 +1883,23 @@ textarea {
 
 .profile-banner-small {
     position: relative;
+    height: 200px;
 }
 
-    .profile-banner-small:before {
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        content: '';
-        position: absolute;
-        pointer-events: none;
-        border: 10px solid rgba(198, 165, 107, 0.3);
-    }
+.sm-background {
+    max-height: 100%;
+    width: 100% !important;
+} 
+.profile-banner-small:before {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    border: 10px solid rgba(198, 165, 107, 0.3);
+}
 
 .profile-thumb-2 {
     width: 80px;
@@ -2132,7 +2110,7 @@ textarea {
 /*------- widget title end -------*/
 /*------- like page list wrapper start -------*/
 .like-page-list-wrapper li {
-    margin-bottom: 35px;
+    margin-bottom: 15px;
 }
 
     .like-page-list-wrapper li:last-child {
@@ -3152,7 +3130,7 @@ textarea {
 }
 
 .frnd-search-title {
-    height: 62px;
+    height: 30px;
     padding: 0 1px;
     display: -webkit-box;
     display: -webkit-flex;
@@ -3372,8 +3350,7 @@ textarea {
 .live-chat-field {
     width: 100%;
     border: none;
-    height: 60px !important;
-    padding-top: 25px;
+    height: 28px !important;
     padding-left: 10px;
     -webkit-transition: 0.4s;
     -o-transition: 0.4s;
