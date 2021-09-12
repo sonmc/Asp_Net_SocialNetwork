@@ -1,5 +1,6 @@
-﻿ 
+﻿
 using System.Web.Mvc;
+using SocialNetwork.Constant;
 using SocialNetwork.Entities;
 using SocialNetwork.Services;
 
@@ -21,19 +22,20 @@ namespace SocialNetwork.Controllers
         public ActionResult Login(string email, string pwd)
         {
             User user = userService.Login(email, pwd);
-            if (user != null)
+            if (user == null || user.Role == Common.ADMIN_ROLE || !user.IsActive)
             {
-                Session["User"] = user;
-                return RedirectToAction("Index");
+                ViewBag.Invalid = "Account is invalid!";
+                return RedirectToAction("Login");
             }
-            return RedirectToAction("Login");
+            Session["User"] = user;
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         public ActionResult Index(int? categoryId = 1)
         {
             var currentUser = Session["User"];
-           
+
             if (currentUser == null)
             {
                 return RedirectToAction("Login");
@@ -47,8 +49,13 @@ namespace SocialNetwork.Controllers
             }
             ViewBag.FriendAround = userService.Get();
             ViewBag.Categories = categoryService.Get();
-            
             return View(news);
+        }
+
+        public JsonResult CreatePost(int userId, string content)
+        {
+            New obj = newService.Create(userId, content);
+            return Json(obj);
         }
 
         public ActionResult Logout()
@@ -57,17 +64,17 @@ namespace SocialNetwork.Controllers
             return RedirectToAction("Login");
         }
 
-        public ActionResult Delete(int id)
+        public ActionResult DeleteNew(int id)
         {
-             newService.Delete(id); 
+            newService.Delete(id);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public ActionResult Update(int id)
+        public ActionResult UpdateNew(int id)
         {
-
-            return RedirectToAction("Index");
+            var newObj = newService.GetById(id);
+            return View(newObj);
         }
     }
 }

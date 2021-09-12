@@ -19,13 +19,15 @@ namespace SocialNetwork.DAL
                     Email="admin@gmail.com", FirstName="Admin",
                     LastName="Page", Gender=true, Password="letmein", Role=0, Address="TP.Hcm",
                     Avatar="https://upanh123.com/wp-content/uploads/2019/01/hinh-nen-girl-xinh-12.jpg",
-                    BackGroundImg="https://salt.tikicdn.com/ts/tmp/9a/7e/db/bd7f0652d2a0a04f5f557e75048291b5.jpg"
+                    BackGroundImg="https://salt.tikicdn.com/ts/tmp/9a/7e/db/bd7f0652d2a0a04f5f557e75048291b5.jpg",
+                    IsActive=true
                 },
-                new User() {Id =9998, Age=20, DoB="2-9-1990",
+                new User() {Id =1, Age=20, DoB="2-9-1990",
                     Email="sonmc@gmail.com", FirstName="Son",
-                    LastName="Mc", Gender=true, Password="letmein", Role=0, Address="HN",
+                    LastName="Mc", Gender=true, Password="letmein", Role=1, Address="HN",
                     Avatar="https://genk.mediacdn.vn/thumb_w/690/2019/7/8/1-15625474669018688730.jpg",
-                    BackGroundImg="https://salt.tikicdn.com/ts/tmp/9a/7e/db/bd7f0652d2a0a04f5f557e75048291b5.jpg"
+                    BackGroundImg="https://salt.tikicdn.com/ts/tmp/9a/7e/db/bd7f0652d2a0a04f5f557e75048291b5.jpg",
+                    IsActive=true
                 }
             };
             users.ForEach(u => context.Users.Add(u));
@@ -40,12 +42,11 @@ namespace SocialNetwork.DAL
             var news = new List<New>
             {
                 new New() {Id=1,Content="Content", ContentType=Common.TEXT_TYPE,
-                    CategoryId=1, Image="", Title="Title", Time="One day ago", DateCreated=DateTime.Now.ToString(),User= null,UserId=9998
-
+                    CategoryId=1, Image="", Title="Title", Time="One day ago", DateCreated=DateTime.Now.ToString(), User= null, UserId=1
                 },
                 new New() {Id=1,Content="Content Image Type", ContentType=Common.IMAGE_TYPE,
-                    CategoryId=1, Image="https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg", 
-                    Title="Title", Time="One day ago", DateCreated=DateTime.Now.ToString(),User= null,UserId=9998
+                    CategoryId=1, Image="https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg",
+                    Title="Title", Time="One day ago", DateCreated=DateTime.Now.ToString(), User= null, UserId=1
 
                 }
             };

@@ -1,0 +1,50 @@
+﻿ 
+@{ 
+    Layout = "~/Views/Shared/templ/_Layout.cshtml";
+}
+
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">News Management</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card mb-4"> 
+                <div class="table-responsive p-3">
+                    <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>No.</th>
+                                <th>Content</th>
+                                <th>Category</th>
+                                <th>Author</th>
+                                <th>DateCreated</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.Content</td>
+                                    <td>@item.Category.Name</td>
+                                    <td>@item.User.FirstName @item.User.LastName</td>
+                                    <td>@item.DateCreated</td>
+                                    <td>
+                                        @if (!item.IsApprove)
+                                        {
+                                            <a href="@Url.Action("Approve","Admin", new { newId = item.Id, isActive = true })" class="btn btn-primary btn-sm btn-custom">Approve</a>
+                                        }
+                                        <a href="@Url.Action("RemoveNew","Admin", new { newId = item.Id })" class="btn btn-danger btn-custom btn-sm">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody> 
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

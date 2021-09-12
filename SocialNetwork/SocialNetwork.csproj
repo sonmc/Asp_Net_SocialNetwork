@@ -365,6 +365,7 @@
     <Content Include="assets\scss\_variables.scss" />
     <None Include="packages.config" />
     <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Admin\New.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

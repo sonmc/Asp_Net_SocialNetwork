@@ -41,21 +41,27 @@
                             </nav>
                         </div>
                     </div>
-
-
                     <div class="col-md-2">
                         <div class="header-top-right d-flex align-items-center justify-content-end">
                             <div class="profile-setting-box">
                                 <div class="profile-thumb-small">
                                     <a href="javascript:void(0)" class="profile-triger">
                                         <figure>
-                                            <img src="assets/images/profile/profile-small-1.jpg" alt="profile picture">
+                                            @if (ViewBag.CurrentUser.Avatar != "")
+                                            {
+                                                <img src="@ViewBag.CurrentUser.Avatar" alt="profile picture">
+                                            }
+                                            else
+                                            {
+                                                <img src="~/imgs/avatar_default.png" />
+                                            }
                                         </figure>
                                     </a>
                                     <div class="profile-dropdown">
                                         <div class="profile-head">
                                             <h5 class="name"><a href="#">@ViewBag.CurrentUser.FirstName @ViewBag.CurrentUser.LastName</a></h5>
                                             <a class="mail" href="#">@ViewBag.CurrentUser.Email</a>
+                                            <input hidden id="currentUserId" value="@ViewBag.CurrentUser.Id" />
                                         </div>
                                         <div class="profile-body">
                                             <ul>
@@ -78,150 +84,11 @@
         <div class="mobile-header-wrapper sticky d-block d-lg-none">
             <div class="mobile-header position-relative ">
                 <div class="mobile-logo">
-                    <a href="index.html">
-                        <img src="assets/images/logo/logo-white.png" alt="logo">
+                    <a href="/" class="mobile-logo-text">
+                        Social Network
                     </a>
                 </div>
-                <div class="mobile-menu w-100">
-                    <ul>
-                        <li>
-                            <button class="notification request-trigger">
-                                <i class="flaticon-users"></i>
-                                <span>03</span>
-                            </button>
-                            <ul class="frnd-request-list">
-                                <li>
-                                    <div class="frnd-request-member">
-                                        <figure class="request-thumb">
-                                            <a href="profile.html">
-                                                <img src="assets/images/profile/profile-midle-1.jpg" alt="proflie author">
-                                            </a>
-                                        </figure>
-                                        <div class="frnd-content">
-                                            <h6 class="author"><a href="profile.html">merry watson</a></h6>
-                                            <p class="author-subtitle">Works at HasTech</p>
-                                            <div class="request-btn-inner">
-                                                <button class="frnd-btn">confirm</button>
-                                                <button class="frnd-btn delete">delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="frnd-request-member">
-                                        <figure class="request-thumb">
-                                            <a href="profile.html">
-                                                <img src="assets/images/profile/profile-midle-2.jpg" alt="proflie author">
-                                            </a>
-                                        </figure>
-                                        <div class="frnd-content">
-                                            <h6 class="author"><a href="profile.html">merry watson</a></h6>
-                                            <p class="author-subtitle">Works at HasTech</p>
-                                            <div class="request-btn-inner">
-                                                <button class="frnd-btn">confirm</button>
-                                                <button class="frnd-btn delete">delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="frnd-request-member">
-                                        <figure class="request-thumb">
-                                            <a href="profile.html">
-                                                <img src="assets/images/profile/profile-midle-3.jpg" alt="proflie author">
-                                            </a>
-                                        </figure>
-                                        <div class="frnd-content">
-                                            <h6 class="author"><a href="profile.html">merry watson</a></h6>
-                                            <p class="author-subtitle">Works at HasTech</p>
-                                            <div class="request-btn-inner">
-                                                <button class="frnd-btn">confirm</button>
-                                                <button class="frnd-btn delete">delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <button class="notification">
-                                <i class="flaticon-notification"></i>
-                                <span>03</span>
-                            </button>
-                        </li>
-                        <li>
-                            <button class="chat-trigger notification">
-                                <i class="flaticon-chats"></i>
-                                <span>04</span>
-                            </button>
-                            <div class="mobile-chat-box">
-                                <div class="live-chat-title">
-                                    <div class="profile-thumb">
-                                        <a href="profile.html">
-                                            <figure class="profile-thumb-small profile-active">
-                                                <img src="assets/images/profile/profile-small-15.jpg" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <div class="posted-author">
-                                        <h6 class="author"><a href="profile.html">Robart Marloyan</a></h6>
-                                        <span class="active-pro">active now</span>
-                                    </div>
-                                    <div class="live-chat-settings ml-auto">
-                                        <button class="chat-settings"><img src="assets/images/icons/settings.png" alt=""></button>
-                                        <button class="close-btn"><img src="assets/images/icons/close.png" alt=""></button>
-                                    </div>
-                                </div>
-                                <div class="message-list-inner">
-                                    <ul class="message-list custom-scroll">
-                                        <li class="text-friends">
-                                            <p>Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text</p>
-                                            <div class="message-time">10 minute ago</div>
-                                        </li>
-                                        <li class="text-author">
-                                            <p>Many desktop publishing packages and web page editors</p>
-                                            <div class="message-time">5 minute ago</div>
-                                        </li>
-                                        <li class="text-friends">
-                                            <p>packages and web page editors </p>
-                                            <div class="message-time">2 minute ago</div>
-                                        </li>
-                                        <li class="text-friends">
-                                            <p>Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text</p>
-                                            <div class="message-time">10 minute ago</div>
-                                        </li>
-                                        <li class="text-author">
-                                            <p>Many desktop publishing packages and web page editors</p>
-                                            <div class="message-time">5 minute ago</div>
-                                        </li>
-                                        <li class="text-friends">
-                                            <p>packages and web page editors </p>
-                                            <div class="message-time">2 minute ago</div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="chat-text-field mob-text-box">
-                                    <textarea class="live-chat-field custom-scroll" placeholder="Text Message"></textarea>
-                                    <button class="chat-message-send" type="submit" value="submit">
-                                        <img src="assets/images/icons/plane.png" alt="">
-                                    </button>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <button class="search-trigger">
-                                <i class="search-icon flaticon-search"></i>
-                                <i class="close-icon flaticon-cross-out"></i>
-                            </button>
-                            <div class="mob-search-box">
-                                <form class="mob-search-inner">
-                                    <input type="text" placeholder="Search Here" class="mob-search-field">
-                                    <button class="mob-search-btn"><i class="flaticon-search"></i></button>
-                                </form>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+
                 <div class="mobile-header-profile">
                     <div class="profile-thumb profile-setting-box">
                         <a href="javascript:void(0)" class="profile-triger">
@@ -312,7 +179,7 @@
 
                     </div>
 
-                    <div class="col-lg-6 order-1 order-lg-2">
+                    <div class="col-lg-6 order-1 order-lg-2" id="content-page">
                         <div class="card card-small">
                             <div class="share-box-inner">
                                 <div class="profile-thumb">
@@ -331,17 +198,17 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Share Your Mood</h5>
+                                                <h5 class="modal-title">Tạo Bài Viết</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body custom-scroll">
-                                                <textarea name="share" class="share-field-big custom-scroll" placeholder="Say Something"></textarea>
+                                                <textarea name="content" id="content" class="share-field-big custom-scroll" placeholder="Say Something"></textarea>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="post-share-btn" data-dismiss="modal">cancel</button>
-                                                <button type="button" class="post-share-btn">post</button>
+                                                <button type="button" onclick="createNewPost()" class="post-share-btn">post</button>
                                             </div>
                                         </div>
                                     </div>
@@ -371,8 +238,8 @@
                                         <span></span>
                                         <div class="post-settings arrow-shape">
                                             <ul>
-                                                <li><a href="@Url.Action("Update","User", new { id = @item.Id })">Edit</a></li>
-                                                <li><a href="@Url.Action("Delete","User", new { id = @item.Id })">Delete</a></li>
+                                                <li><a href="@Url.Action("UpdateNew","User", new { id = @item.Id })">Edit</a></li>
+                                                <li><a href="@Url.Action("DeleteNew","User", new { id = @item.Id })">Delete</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -420,17 +287,26 @@
                     <div class="col-lg-3 order-3">
                         <aside class="widget-area">
                             <div class="card widget-item">
-                                <h4 class="widget-title">Có thể bạn quen ?</h4>
+                                <h4 class="widget-title">Do you know ?</h4>
                                 <div class="widget-body">
                                     <ul class="like-page-list-wrapper">
                                         @foreach (var item in @ViewBag.FriendAround)
                                         {
                                             <li class="unorder-list">
                                                 <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-small">
-                                                            <img src="@item.Avatar" alt="profile picture">
-                                                        </figure>
+                                                    <a href="#"> 
+                                                        @if (@item.Avatar != null)
+                                                        {
+                                                            <figure class="profile-thumb-small">
+                                                                <img src="@item.Avatar" alt="profile picture">
+                                                            </figure>
+                                                        }
+                                                        else
+                                                        {
+                                                            <figure class="profile-thumb-small">
+                                                                <img src="~/imgs/avatar_default.png" />
+                                                            </figure>
+                                                        }
                                                     </a>
                                                 </div>
 
@@ -461,6 +337,18 @@
                                                         <figure class="profile-thumb-small">
                                                             <img src="assets/images/profile/profile-small-1.jpg" alt="Friend Avatar">
                                                         </figure>
+                                                        @*@if (@item.Avatar != null)
+                                                        {
+                                                            <figure class="profile-thumb-small">
+                                                                <img src="@item.Avatar" alt="profile picture">
+                                                            </figure>
+                                                        }
+                                                        else
+                                                        {
+                                                            <figure class="profile-thumb-small">
+                                                                <img src="~/imgs/avatar_default.png" />
+                                                            </figure>
+                                                        }*@
                                                     </a>
                                                 </div>
                                                 <!-- profile picture end -->
@@ -658,7 +546,26 @@
     <script src="~/Scripts/imagesloaded.pkgd.min.js"></script>
     <script src="~/Scripts/isotope.pkgd.min.js"></script>
     <script src="~/Scripts/main.js"></script>
+    <script>
+        function createNewPost() {
+            let content = document.getElementById("content").value;
+            let currentUserId = document.getElementById("currentUserId").value;
 
+            var request = $.ajax({
+                url: "https://localhost:44399/User/CreatePost",
+                method: "POST",
+                data: { userId: parseInt(currentUserId), content: content }
+            });
+
+            request.done(function (response) {
+                console.log(response);
+            });
+
+            request.fail(function (jqXHR, textStatus) {
+                alert("Request failed: " + textStatus);
+            });
+        }
+    </script>
 </body>
 
 </html>

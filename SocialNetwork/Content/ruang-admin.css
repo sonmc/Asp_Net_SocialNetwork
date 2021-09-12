@@ -610,8 +610,7 @@ a:focus {
 }
 
 .sidebar .nav-item {
-  position: relative;
-  margin-bottom: -15px
+  position: relative; 
 }
 
 .sidebar .nav-item:last-child {
@@ -636,9 +635,10 @@ a:focus {
   display: inline
 }
 
-.sidebar .nav-item.active .nav-link {
-  font-weight: 800
-}
+    .sidebar .nav-item.active .nav-link {
+        font-weight: 800; 
+        background-color: #eee;
+    }
 
 .sidebar .nav-item .nav-link[data-toggle=collapse]::after {
   width: 1rem;
@@ -795,7 +795,7 @@ a:focus {
 
 .sidebar.toggled {
   overflow: visible;
-  width: 6.5rem !important;
+  width: 0rem !important;
   transition: all .3s ease-in-out;
   -webkit-transition: all .3s ease-in-out;
   z-index: 1
@@ -1917,4 +1917,7 @@ body.sidebar-toggled footer.sticky-footer {
   color: #fff;
   background-color: #3f51b5;
   border-color: #3f51b5
+}
+.btn-custom {
+    width: 100px;
 }

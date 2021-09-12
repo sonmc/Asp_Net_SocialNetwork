@@ -3,16 +3,21 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Social Network Admin Page</title>
+    <link href="~/Content/all.css" rel="stylesheet" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/Site.css" rel="stylesheet" /> 
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/ruang-admin.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container body-content">
         @RenderBody()
     </div>
- 
+
     <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/jquery.easing.min.js"></script>
+    <script src="~/Scripts/ruang-admin.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

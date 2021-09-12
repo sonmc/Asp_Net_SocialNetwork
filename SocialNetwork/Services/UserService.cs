@@ -1,6 +1,8 @@
 ﻿using SocialNetwork.DAL;
 using SocialNetwork.Entities;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 namespace SocialNetwork.Services
 {
@@ -25,7 +27,27 @@ namespace SocialNetwork.Services
         }
         public List<User> Get()
         {
-            return db.Users.ToList();
+            return db.Users.Where(u => u.Role != 0).ToList();
         }
+        public bool UpdateUser(User user)
+        {
+            bool isUpdated = false;
+            try
+            {
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                isUpdated = true;
+            }
+            catch (Exception ex) {  }
+            return isUpdated;
+        }
+
+        public User Create(User user)
+        {
+            User added = db.Users.Add(user);
+            db.SaveChanges();
+            return added;
+        }
+        
     }
 }

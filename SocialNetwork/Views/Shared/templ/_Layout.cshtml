@@ -4,51 +4,93 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title -Social Network Application</title>
+    <title>Social Network Application</title>
     <link href="~/Content/all.css" rel="stylesheet" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/ruang-admin.css" rel="stylesheet" />
 
 </head>
 <body id="page-top">
-    <div id="wrapper">
-        <!-- Sidebar -->
+    <div id="wrapper"> 
         <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-text mx-3">Social Network</div>
             </a>
 
-            <hr class="sidebar-divider">
+            <hr class="sidebar-divider" />
             <div class="sidebar-heading">
                 Management
-            </div> 
-            <li class="nav-item">
-                <a class="nav-link" href="~/Admin/Index">
+            </div>
+
+            <li class="nav-item" id="new">
+                <a class="nav-link" href="@Url.Action("New","Admin")">
                     <span>News Management</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="~/User/Index">
+            <li class="nav-item" id="user">
+                <a class="nav-link" href="@Url.Action("Index","Admin")">
                     <span>Users Management</span>
                 </a>
             </li>
-        </ul>
-        <!-- Sidebar -->
+        </ul> 
         <div id="content-wrapper" class="d-flex flex-column">
-            @RenderBody() 
+            <div id="content">
+                <!-- TopBar -->
+                <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+                    <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <object data="~/imgs/avatar_default.png" style="max-width: 50px; border-radius: 30px;" type="image/png">
+                                    <img class="img-profile rounded-circle" src="@ViewBag.CurrentUser.Avatar" style="max-width: 50px" alt="Avatar Admin" />
+                                </object>
+                                <span class="ml-2 d-none d-lg-inline text-white small">@ViewBag.CurrentUser.FirstName @ViewBag.CurrentUser.LastName</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+
+                                <a class="dropdown-item" href="@Url.Action("Logout","Admin")">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                @RenderBody()
+            </div>
+               
+            </div>
         </div>
-    </div>
 
     <!-- Scroll to top -->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-    <script src="~/Scripts/jquery.min.js"></script> 
+    <script src="~/Scripts/jquery.min.js"></script>
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
-    <script src="~/Scripts/jquery.easing.min.js"></script> 
+    <script src="~/Scripts/jquery.easing.min.js"></script>
     <script src="~/Scripts/ruang-admin.js"></script>
-    <script src="~/Scripts/Chart.min.js"></script> 
+    <script src="~/Scripts/Chart.min.js"></script>
     <script src="~/Scripts/chart-area-demo.js"></script>
     @RenderSection("scripts", required: false)
+    <script>
+        let currentPage = window.location.href;
+        currentPage = currentPage.split("/")[currentPage.split("/").length - 1];
+        if (currentPage == "Index") {
+            $("#user").addClass("active");
+            $("#new").removeClass("active"); 
+        } else {
+            $("#new").addClass("active");
+            $("#user").removeClass("active"); 
+        } 
+
+    </script>
 </body>
 </html>

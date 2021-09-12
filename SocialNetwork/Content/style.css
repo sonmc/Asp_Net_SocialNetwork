@@ -1228,11 +1228,10 @@ textarea {
 }
 
 .mobile-logo,
-.mobile-header-profile {
-    width: 80px;
+.mobile-header-profile { 
+    margin-left:10px;
     height: 100%;
     text-align: center;
-    background-color: #dc4734;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -1251,7 +1250,15 @@ textarea {
     .mobile-header-profile .profile-thumb-middle {
         border-radius: 0;
     }
-
+.mobile-logo-text {
+    color: #dc4734;
+    display: block;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 1;
+    padding: 10px 0;
+    text-transform: capitalize;
+}
 .mobile-menu ul {
     display: -webkit-box;
     display: -webkit-flex;
@@ -1889,7 +1896,8 @@ textarea {
 .sm-background {
     max-height: 100%;
     width: 100% !important;
-} 
+}
+
 .profile-banner-small:before {
     top: 0;
     left: 0;
