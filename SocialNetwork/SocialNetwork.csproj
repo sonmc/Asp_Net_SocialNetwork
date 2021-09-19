@@ -132,6 +132,7 @@
     <Compile Include="DAL\DataContext.cs" />
     <Compile Include="DAL\DataInit.cs" />
     <Compile Include="Entities\Message.cs" />
+    <Compile Include="Entities\SharePost.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

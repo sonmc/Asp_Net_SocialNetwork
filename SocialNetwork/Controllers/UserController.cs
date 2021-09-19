@@ -57,6 +57,7 @@ namespace SocialNetwork.Controllers
             ViewBag.Friends = userService.GetFriends(currentUser.Id);
             ViewBag.FriendAround = userService.GetUser(currentUser.Id);
             ViewBag.Categories = categoryService.Get();
+            ViewBag.SharePosts = userService.GetPostShared(currentUser.Id);
             return View(news);
         }
 
@@ -130,6 +131,19 @@ namespace SocialNetwork.Controllers
             var isRemoved = userService.RemoveFriendRequest(friendId, currentUser.Id);
             return Json(isRemoved);
         }
-        
+
+        [HttpPost]
+        public JsonResult SharePostToFriend(int friendId, int postId)
+        {
+            var currentUser = Session["User"] as User;
+            bool shared = userService.SharePostToFriend(currentUser.Id, friendId, postId);
+            return Json(shared);
+        }
+        [HttpGet]
+        public JsonResult GetNewDetail(int newId)
+        {
+            var newObj = newService.GetById(newId);
+            return Json(newObj, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿ 
+using System.Collections.Generic; 
 using System.Data.Entity;
 using SocialNetwork.Entities;
 using SocialNetwork.Constant;
@@ -54,7 +52,7 @@ namespace SocialNetwork.DAL
                 new New() {Id=1,Content="Content", ContentType=Common.TEXT_TYPE,
                     CategoryId=1, Image="", Title="Title", Time="", DateCreated= "9/11/2021 10:20:22", User= null, UserId=1, IsApprove = true
                 },
-                new New() {Id=1,Content="Content Image Type", ContentType=Common.IMAGE_TYPE, CategoryId=1,
+                new New() {Id=2,Content="Content Image Type", ContentType=Common.IMAGE_TYPE, CategoryId=1,
                     Image="anhdep6.jpg",
                     Title="Title", Time="", DateCreated= "9/12/2021 10:20:22", User= null, UserId=1, IsApprove = true
                 }

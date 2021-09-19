@@ -161,34 +161,24 @@
                                 <h4 class="widget-title">Recent Notifications</h4>
                                 <div class="widget-body">
                                     <ul class="like-page-list-wrapper">
-                                        <li class="unorder-list">
-                                            <div class="profile-thumb">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="assets/images/profile/profile-small-9.jpg" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
 
-                                            <div class="unorder-list-info">
-                                                <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                                <p class="list-subtitle">5 min ago</p>
-                                            </div>
-                                        </li>
-                                        <li class="unorder-list">
-                                            <div class="profile-thumb">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="assets/images/profile/profile-small-35.jpg" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
+                                        @foreach (var item in ViewBag.SharePosts)
+                                        {
+                                            <li class="unorder-list">
+                                                <div class="profile-thumb">
+                                                    <a href="#">
+                                                        <figure class="profile-thumb-small">
+                                                            <img src="@item.UserShared.Avatar" alt="profile picture">
+                                                        </figure>
+                                                    </a>
+                                                </div>
 
-                                            <div class="unorder-list-info">
-                                                <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                                <p class="list-subtitle">10 min ago</p>
-                                            </div>
-                                        </li>
+                                                <div class="unorder-list-info">
+                                                    <h3 class="list-title"><a href="javascript:;" onclick="openContentPostDetail(@item.NewId)">@item.UserShared.FirstName @item.UserShared.LastName Shared with you a content.</a></h3>
+                                                    <p class="list-subtitle">@item.Time</p>
+                                                </div>
+                                            </li>
+                                        }
                                     </ul>
                                 </div>
                             </div>
@@ -253,8 +243,8 @@
                                     <div class="post-meta">
                                         <ul class="comment-share-meta">
                                             <li>
-                                                <button onclick="sharePostToFriend()" class="post-share">
-                                                    <i class="bi bi-share"></i>
+                                                <button onclick="openModalShare(@item.Id)" class="post-share">
+                                                    <i class="bi bi-share"> </i>
                                                 </button>
                                             </li>
                                         </ul>
@@ -293,7 +283,7 @@
                                                 <div class="unorder-list-info">
                                                     <h3 class="list-title"><a href="#">@item.FirstName @item.LastName </a> Sent you a friend request</h3>
                                                     <p class="list-subtitle">
-                                                        <input hidden id="friendId" value="@item.Id"/>
+                                                        <input hidden id="friendId" value="@item.Id" />
                                                         <a onclick="acceptFriend()" style="padding-right: 10px" class="">Accept</a>
                                                         <a onclick="removeFriend()" class="">Remove</a>
                                                     </p>
@@ -593,6 +583,73 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="share_post" aria-labelledby="textbox">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Share a post</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scroll">
+                    <div class="custom-scroll">
+                        <ul>
+                            @foreach (var item in ViewBag.Friends)
+                            {
+                                <li class="d-flex align-items-center profile-active">
+                                    <div class="profile-thumb active">
+                                        @if (@item.UserFriend.Avatar != null)
+                                        {
+                                            <figure class="profile-thumb-small">
+                                                <img src="@item.UserFriend.Avatar" alt="Friend Avatar">
+                                            </figure>
+                                        }
+                                        else
+                                        {
+                                            <figure class="profile-thumb-small">
+                                                <img src="~/imgs/avatar_default.png" />
+                                            </figure>
+                                        }
+                                    </div>
+
+                                    <div class="posted-author">
+                                        <input value="@item.UserFriend.Id" hidden id="sentToUserId" />
+                                        <h6 class="author">@item.UserFriend.FirstName @item.UserFriend.LastName</h6>
+                                    </div>
+                                    <div class="posted-author">
+                                        <button style="height: 34px" onclick="sharePostToFriend()" class="btn-share" type="button"> Share </button>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="post_detail" aria-labelledby="textbox">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Shared with you</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scroll">
+                    <div class="post-content">
+                        <p class="post-desc" id="contentShared">  </p>
+                        <div id="formContainerImg" class="post-thumb-gallery post-thumb">
+                            <img src="" id="imgShared" class="img-posted" alt="post image" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
@@ -603,14 +660,38 @@
     $.toastDefaults.dismissible = true;
     $.toastDefaults.stackable = true;
     $.toastDefaults.pauseDelayOnHover = true;
-
-    function sharePostToFriend() {
-        let id = $("#friendId").val();
-
+    var postId = 0;
+    function openContentPostDetail(newId) {
         var request = $.ajax({
-            url: "https://localhost:44399/User/UserFriendAccept",
+            url: "https://localhost:44399/User/GetNewDetail?newId=" + newId,
+            method: "GET",
+        });
+
+        request.done(function (response) {
+            if (response) {
+                $("#post_detail").modal("show");
+                $("#contentShared").text(response.Content);
+                if (response.Image) {
+                    $('#imgShared').attr('src', "/UploadedFiles/"+  response.Image);
+
+                } else {
+                    $('#formContainerImg').css('display', 'none');
+                }
+               
+            }
+        });
+
+    }
+    function openModalShare(id) {
+        postId = id;
+        $("#share_post").modal("show");
+    }
+    function sharePostToFriend() {
+        let id = $("#sentToUserId").val();
+        var request = $.ajax({
+            url: "https://localhost:44399/User/SharePostToFriend",
             method: "POST",
-            data: { friendId: id }
+            data: { friendId: id, postId: postId }
         });
 
         request.done(function (response) {
@@ -624,7 +705,7 @@
                         delay: 3000
                     });
                 }, 1000);
-                $("#textbox").modal("hide");
+                $("#share_post").modal("hide");
             }
         });
 
@@ -652,7 +733,7 @@
                         delay: 3000
                     });
                 }, 1000);
-                $("#textbox").modal("hide");
+                $("#share_post").modal("hide");
             }
         });
 
@@ -751,55 +832,6 @@
 
         request.done(function (response) {
             if (response) {
-                //let contentPost = "";
-                //contentPost += "<div class='card'>";
-
-                //contentPost += "<div class='post-title d-flex align-items-center'>";
-                //contentPost += "<div class='profile-thumb'>";
-                //contentPost += "<figure class='profile-thumb-middle'>";
-                //contentPost += "<img src='" + response.User.Avatar + "' alt='profile picture'>";
-                //contentPost += "</figure>";
-                //contentPost += "</div>";
-
-                //contentPost += "<div class='posted-author'>";
-                //contentPost += " <h6 class='author'><a href='profile.html'>" + response.User.FirstName + " " + response.User.LastName + "</a></h6>";
-                //contentPost += "<span class='post-time'>" + response.Time + "</span>";
-                //contentPost += "</div>";
-
-                //contentPost += " <div class='post-settings-bar'>";
-                //contentPost += "<span></span>";
-                //contentPost += "<span></span>";
-                //contentPost += "<span></span>";
-                //contentPost += " <div class='post-settings arrow-shape'>";
-                //contentPost += "<input hidden id='idPost' />";
-                //contentPost += " <ul>";
-                //contentPost += " <li><a href='javascript:;'>Edit</a></li>";
-                //contentPost += "<li><a href='javascript:;'>Delete</a></li>";
-                //contentPost += "</ul>";
-                //contentPost += "</div>";
-                //contentPost += "</div>";
-                //contentPost += "</div>";
-
-                //contentPost += "<div class='post-content'>";
-                //contentPost += "<p class='post-desc' id='content'> " + response.Content + " </p>";
-                //if (response.ContentType == 0) {
-                //    contentPost += "<div class='post-thumb-gallery'>";
-                //    contentPost += "<img src='" + response.Image + "' alt='post image' />";
-                //    contentPost += "</div>";
-                //}
-                //contentPost += "<div class='post-meta'>";
-                //contentPost += "<ul class='comment-share-meta'>";
-                //contentPost += "<li>";
-                //contentPost += "<button class='post-share'>";
-                //contentPost += "<i class='bi bi-share'></i>";
-                //contentPost == "</button>";
-                //contentPost += "</li>";
-                //contentPost += "</ul>";
-                //contentPost += "</div>";
-
-                //contentPost += "</div>";
-                //$("#content-page").append(contentPost);
-
                 setTimeout(() => {
                     $.toast({
                         type: "success",

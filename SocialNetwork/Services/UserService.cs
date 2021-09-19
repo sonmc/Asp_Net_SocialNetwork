@@ -1,8 +1,10 @@
-﻿using SocialNetwork.DAL;
+﻿using SocialNetwork.Constant;
+using SocialNetwork.DAL;
 using SocialNetwork.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 namespace SocialNetwork.Services
 {
@@ -38,11 +40,18 @@ namespace SocialNetwork.Services
             var listFriend = db.UserFriend.Where(x => x.FromUserId == curentUserId).ToList();
             foreach (var item in users)
             {
-                foreach (var friend in listFriend)
+                if (listFriend.Count == 0)
                 {
-                    if (friend.FromUserId != item.Id && friend.ToUserId != item.Id && friend.Status < 3)
+                    notFriend.Add(item);
+                }
+                else
+                {
+                    foreach (var friend in listFriend)
                     {
-                        notFriend.Add(item);
+                        if (friend.FromUserId != item.Id && friend.ToUserId != item.Id && friend.Status < 3)
+                        {
+                            notFriend.Add(item);
+                        }
                     }
                 }
             }
@@ -133,6 +142,39 @@ namespace SocialNetwork.Services
                 isRemoved = false;
             }
             return isRemoved;
+        }
+        public List<SharePost> GetPostShared(int currentId)
+        {
+            var listPostShared = db.SharePosts.Where(x => x.ToUserId == currentId).ToList();
+            foreach (var item in listPostShared)
+            { 
+                item.UserShared = db.Users.Where(x => x.Id == item.FromUserId).FirstOrDefault();
+                CultureInfo culture = new CultureInfo("en-US");
+                var datetimeCreated = Convert.ToDateTime(DateTime.Now, culture);
+                item.Time = Common.GetTime(datetimeCreated); 
+            }
+            return listPostShared;
+        }
+        public bool SharePostToFriend(int fromId, int toId, int postId)
+        {
+            bool isShared = false;
+            try
+            {
+                var sharePost = new SharePost();
+                sharePost.FromUserId = fromId;
+                sharePost.ToUserId = toId;
+                sharePost.NewId = postId;
+                sharePost.DateCreated = DateTime.Now.ToString();
+                db.SharePosts.Add(sharePost);
+                db.SaveChanges();
+                isShared = true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return isShared;
         }
     }
 }
