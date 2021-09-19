@@ -10,6 +10,7 @@ namespace SocialNetwork.DAL
         public DbSet<New> News { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Friend> UserFriend { get; set; }
 
     }
 

@@ -7,6 +7,7 @@ namespace SocialNetwork.Entities
     public class New
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }

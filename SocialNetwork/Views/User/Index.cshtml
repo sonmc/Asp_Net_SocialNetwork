@@ -15,7 +15,7 @@
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" type="image/x-icon" href="http://actualidadradio.com/favicon.ico/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900" rel="stylesheet">
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/bicon.min.css" rel="stylesheet" />
@@ -25,6 +25,7 @@
     <link href="~/Content/nice-select.css" rel="stylesheet" />
     <link href="~/Content/perfect-scrollbar.css" rel="stylesheet" />
     <link href="~/Content/lightgallery.min.css" rel="stylesheet" />
+    <link href="~/Content/toast.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/style.css">
 </head>
 <body>
@@ -68,7 +69,7 @@
                                                 <li><a href="profile.html"><i class="flaticon-user"></i>Profile</a></li>
                                             </ul>
                                             <ul>
-                                                <li><a href="@Url.Action("Logout", "User")"><i class="flaticon-unlock"></i>Sing out</a></li>
+                                                <li><a href="@Url.Action("Logout", "User")"><i class="flaticon-unlock"></i>Signout</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -135,9 +136,25 @@
                                         </a>
                                     </figure>
                                     <div class="profile-desc text-center">
-                                        <h6 class="author"><a href="profile.html">Dimbel Lebmid</a></h6>
-                                        <p>Any one can join with but Social network us if you want Any one can join with us if you want</p>
+                                        <h6 class="author"><a href="profile.html">@ViewBag.CurrentUser.FirstName @ViewBag.CurrentUser.LastName</a></h6>
+                                        <p>@ViewBag.CurrentUser.Description</p>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="card widget-item">
+                                <h4 class="widget-title">Categories</h4>
+                                <div class="widget-body">
+                                    <ul class="like-page-list-wrapper">
+                                        @foreach (var item in ViewBag.Categories)
+                                        {
+                                            <li class="unorder-list">
+                                                <div class="unorder-list-info">
+                                                    <h3 class="list-title"><a href="@Url.Action("Index", "User",new { categoryId = item.Id})">@item.Name</a></h3>
+                                                </div>
+                                            </li>
+
+                                        }
+                                    </ul>
                                 </div>
                             </div>
                             <div class="card widget-item">
@@ -194,25 +211,6 @@
                                         <textarea name="share" class="share-text-field" aria-disabled="true" placeholder="Say Something" data-toggle="modal" data-target="#textbox" id="email"></textarea>
                                     </form>
                                 </div>
-                                <div class="modal fade" id="textbox" aria-labelledby="textbox">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Tạo Bài Viết</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body custom-scroll">
-                                                <textarea name="content" id="content" class="share-field-big custom-scroll" placeholder="Say Something"></textarea>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="post-share-btn" data-dismiss="modal">cancel</button>
-                                                <button type="button" onclick="createNewPost()" class="post-share-btn">post</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         @foreach (var item in Model)
@@ -220,16 +218,14 @@
                             <div class="card">
                                 <div class="post-title d-flex align-items-center">
                                     <div class="profile-thumb">
-                                        <a href="#">
-                                            <figure class="profile-thumb-middle">
-                                                <img src="@item.User.Avatar" alt="profile picture">
-                                            </figure>
-                                        </a>
+                                        <figure class="profile-thumb-middle">
+                                            <img src="@item.User.Avatar" alt="profile picture">
+                                        </figure>
                                     </div>
 
                                     <div class="posted-author">
                                         <h6 class="author"><a href="profile.html">@item.User.FirstName @item.User.LastName</a></h6>
-                                        <span class="post-time">20 min ago</span>
+                                        <span class="post-time">@item.Time</span>
                                     </div>
 
                                     <div class="post-settings-bar">
@@ -245,36 +241,20 @@
                                     </div>
                                 </div>
                                 <div class="post-content">
-                                    <p class="post-desc">
+                                    <p class="post-desc" id="content">
                                         @item.Content
                                     </p>
                                     @if (item.ContentType == Common.IMAGE_TYPE)
                                     {
-                                        <div class="post-thumb-gallery">
-                                            <figure class="post-thumb img-popup">
-                                                <a href="@item.Image">
-                                                    <img src="@item.Image" alt="post image">
-                                                </a>
-                                            </figure>
+                                        <div class="post-thumb-gallery post-thumb">
+                                            <img src="@Url.Content("~/UploadedFiles/" + item.Image)" class="img-posted" alt="post image" />
                                         </div>
                                     }
                                     <div class="post-meta">
-                                        @*<button class="post-meta-like">
-                                                <i class="bi bi-heart-beat"></i>
-                                                <span>You and 201 people like this</span>
-                                                <strong>201</strong>
-                                            </button>*@
                                         <ul class="comment-share-meta">
-                                            @*<li>
-                                                    <button class="post-comment">
-                                                        <i class="bi bi-chat-bubble"></i>
-                                                        <span>41</span>
-                                                    </button>
-                                                </li>*@
                                             <li>
-                                                <button class="post-share">
+                                                <button onclick="sharePostToFriend()" class="post-share">
                                                     <i class="bi bi-share"></i>
-                                                    <span>07</span>
                                                 </button>
                                             </li>
                                         </ul>
@@ -287,14 +267,55 @@
                     <div class="col-lg-3 order-3">
                         <aside class="widget-area">
                             <div class="card widget-item">
-                                <h4 class="widget-title">Do you know ?</h4>
+                                <h5 class="widget-title">Friend requests</h5>
+                                <div class="widget-body">
+                                    <ul class="like-page-list-wrapper">
+                                        @foreach (var item in @ViewBag.FriendRequest)
+                                        {
+                                            <li class="unorder-list">
+                                                <div class="profile-thumb">
+                                                    <a href="#">
+                                                        @if (@item.Avatar != null)
+                                                        {
+                                                            <figure class="profile-thumb-small">
+                                                                <img src="@item.Avatar" alt="profile picture">
+                                                            </figure>
+                                                        }
+                                                        else
+                                                        {
+                                                            <figure class="profile-thumb-small">
+                                                                <img src="~/imgs/avatar_default.png" />
+                                                            </figure>
+                                                        }
+                                                    </a>
+                                                </div>
+
+                                                <div class="unorder-list-info">
+                                                    <h3 class="list-title"><a href="#">@item.FirstName @item.LastName </a> Sent you a friend request</h3>
+                                                    <p class="list-subtitle">
+                                                        <input hidden id="friendId" value="@item.Id"/>
+                                                        <a onclick="acceptFriend()" style="padding-right: 10px" class="">Accept</a>
+                                                        <a onclick="removeFriend()" class="">Remove</a>
+                                                    </p>
+                                                </div>
+                                                <button class="like-button">
+                                                    <img class="heart" src="assets/images/icons/heart.png" alt="">
+                                                    <img class="heart-color" src="assets/images/icons/heart-color.png" alt="">
+                                                </button>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card widget-item">
+                                <h5 class="widget-title">Do you know ?</h5>
                                 <div class="widget-body">
                                     <ul class="like-page-list-wrapper">
                                         @foreach (var item in @ViewBag.FriendAround)
                                         {
                                             <li class="unorder-list">
                                                 <div class="profile-thumb">
-                                                    <a href="#"> 
+                                                    <a href="#">
                                                         @if (@item.Avatar != null)
                                                         {
                                                             <figure class="profile-thumb-small">
@@ -312,11 +333,10 @@
 
                                                 <div class="unorder-list-info">
                                                     <h3 class="list-title"><a href="#">@item.FirstName @item.LastName</a></h3>
-                                                    <p class="list-subtitle"><a href="#">2 mutual</a></p>
                                                 </div>
-                                                <button class="like-button">
-                                                    <img class="heart" src="assets/images/icons/heart.png" alt="">
-                                                    <img class="heart-color" src="assets/images/icons/heart-color.png" alt="">
+                                                <input hidden id="userId" value="@item.Id" />
+                                                <button class="like-button" id="add-friend-path" onclick="addFriend()">
+                                                    <img src="~/imgs/heart-color.png" />
                                                 </button>
                                             </li>
                                         }
@@ -324,23 +344,21 @@
                                 </div>
                             </div>
                             <div class="card widget-item">
+                                <h5 class="widget-title">List friends</h5>
                                 <div class="friend-search-list show">
                                     <div class="frnd-search-title">
                                         <input class="live-chat-field custom-scroll" placeholder="Tìm bạn" />
                                     </div>
                                     <div class="frnd-search-inner custom-scroll">
                                         <ul>
-                                            <li class="d-flex align-items-center profile-active">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb active">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-small">
-                                                            <img src="assets/images/profile/profile-small-1.jpg" alt="Friend Avatar">
-                                                        </figure>
-                                                        @*@if (@item.Avatar != null)
+                                            @foreach (var item in ViewBag.Friends)
+                                            {
+                                                <li class="d-flex align-items-center profile-active">
+                                                    <div class="profile-thumb active">
+                                                        @if (@item.UserFriend.Avatar != null)
                                                         {
                                                             <figure class="profile-thumb-small">
-                                                                <img src="@item.Avatar" alt="profile picture">
+                                                                <img src="@item.UserFriend.Avatar" alt="Friend Avatar">
                                                             </figure>
                                                         }
                                                         else
@@ -348,25 +366,22 @@
                                                             <figure class="profile-thumb-small">
                                                                 <img src="~/imgs/avatar_default.png" />
                                                             </figure>
-                                                        }*@
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
+                                                        }
+                                                    </div>
 
-                                                <div class="posted-author">
-                                                    <h6 class="author">Jon Wilime</h6>
-                                                    <p>Many desktop publishing</p>
-                                                </div>
-                                            </li>
+                                                    <div class="posted-author">
+                                                        <h6 class="author">@item.UserFriend.FirstName @item.UserFriend.LastName</h6>
+                                                    </div>
+                                                </li>
+                                            }
                                         </ul>
                                     </div>
 
                                 </div>
                             </div>
-
-
                         </aside>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -546,26 +561,260 @@
     <script src="~/Scripts/imagesloaded.pkgd.min.js"></script>
     <script src="~/Scripts/isotope.pkgd.min.js"></script>
     <script src="~/Scripts/main.js"></script>
-    <script>
-        function createNewPost() {
-            let content = document.getElementById("content").value;
-            let currentUserId = document.getElementById("currentUserId").value;
-
-            var request = $.ajax({
-                url: "https://localhost:44399/User/CreatePost",
-                method: "POST",
-                data: { userId: parseInt(currentUserId), content: content }
-            });
-
-            request.done(function (response) {
-                console.log(response);
-            });
-
-            request.fail(function (jqXHR, textStatus) {
-                alert("Request failed: " + textStatus);
-            });
-        }
-    </script>
+    <script src="~/Scripts/toast.js"></script>
+    <div class="modal fade" id="textbox" aria-labelledby="textbox">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Share a content</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scroll">
+                    <div class="content-post" style=" border: 1px solid #dddddd;">
+                        <select class="form-control" id="categoryId" style="width:200px; height: 30px">
+                            @foreach (var item in @ViewBag.Categories)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                        <textarea id="content" class="share-field-big custom-scroll" placeholder="Say Something"></textarea>
+                        <input hidden id="imgPath" />
+                        <div class="upload-btn-wrapper fileSelected">
+                            <img id="output" src="~/imgs/blankImg.PNG" style="height: 100%; width: 100%" alt="Choice a image" />
+                            <input type="file" style="width: 100%; height:100%" name="myfile" onchange="uploadFile(this)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="createNewPost()" class="post-share-btn">post</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
+
+
+<script>
+    $.toastDefaults.position = 'top-right';
+    $.toastDefaults.dismissible = true;
+    $.toastDefaults.stackable = true;
+    $.toastDefaults.pauseDelayOnHover = true;
+
+    function sharePostToFriend() {
+        let id = $("#friendId").val();
+
+        var request = $.ajax({
+            url: "https://localhost:44399/User/UserFriendAccept",
+            method: "POST",
+            data: { friendId: id }
+        });
+
+        request.done(function (response) {
+            if (response) {
+                setTimeout(() => {
+                    $.toast({
+                        type: "success",
+                        title: "",
+                        subtitle: 'Success !',
+                        content: "",
+                        delay: 3000
+                    });
+                }, 1000);
+                $("#textbox").modal("hide");
+            }
+        });
+
+        request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
+    function acceptFriend() {
+        let id = $("#friendId").val();
+
+        var request = $.ajax({
+            url: "https://localhost:44399/User/UserFriendAccept",
+            method: "POST",
+            data: { friendId: id }
+        });
+
+        request.done(function (response) {
+            if (response) {
+                setTimeout(() => {
+                    $.toast({
+                        type: "success",
+                        title: "",
+                        subtitle: 'Success !',
+                        content: "",
+                        delay: 3000
+                    });
+                }, 1000);
+                $("#textbox").modal("hide");
+            }
+        });
+
+        request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
+    function removeFriend() {
+        let id = $("#friendId").val();
+
+        var request = $.ajax({
+            url: "https://localhost:44399/User/UserFriendRemove",
+            method: "POST",
+            data: { friendId: id }
+        });
+
+        request.done(function (response) {
+
+            if (response) {
+                setTimeout(() => {
+                    $.toast({
+                        type: "success",
+                        title: "",
+                        subtitle: 'Success !',
+                        content: "",
+                        delay: 3000
+                    });
+                }, 1000);
+                $("#textbox").modal("hide");
+            }
+        });
+
+        request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
+    function addFriend() {
+        let id = $("#userId").val();
+
+        var request = $.ajax({
+            url: "https://localhost:44399/User/AddFriend",
+            method: "POST",
+            data: { toId: id }
+        });
+
+        request.done(function (response) {
+
+            if (response) {
+                setTimeout(() => {
+                    $.toast({
+                        type: "success",
+                        title: "",
+                        subtitle: 'Success !',
+                        content: "",
+                        delay: 3000
+                    });
+                }, 1000);
+                $("#textbox").modal("hide");
+            }
+        });
+
+        request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
+    function uploadFile(e) {
+        const file = window.URL.createObjectURL(e.files[0]);
+        document.getElementById('output').src = file;
+        console.log("e.files[0]e.files[0]", e.files[0]);
+        var formData = new FormData();
+        formData.append(e.files[0].name, e.files[0]);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/User/UploadFile');
+        xhr.send(formData);
+        xhr.onreadystatechange = function () {
+
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                const response = JSON.parse(xhr.response);
+                debugger
+                $("#imgPath").val(response.data);
+            }
+        }
+    }
+    function createNewPost() {
+        let content = $("textarea#content").val();
+        let currentUserId = $("#currentUserId").val();
+        let categoryId = $('#categoryId').find(":selected").val();
+        let img = $("#imgPath").val();
+
+        var request = $.ajax({
+            url: "https://localhost:44399/User/CreatePost",
+            method: "POST",
+            data: { userId: parseInt(currentUserId), content: content, categoryId: parseInt(categoryId), img: img }
+        });
+
+        request.done(function (response) {
+            if (response) {
+                //let contentPost = "";
+                //contentPost += "<div class='card'>";
+
+                //contentPost += "<div class='post-title d-flex align-items-center'>";
+                //contentPost += "<div class='profile-thumb'>";
+                //contentPost += "<figure class='profile-thumb-middle'>";
+                //contentPost += "<img src='" + response.User.Avatar + "' alt='profile picture'>";
+                //contentPost += "</figure>";
+                //contentPost += "</div>";
+
+                //contentPost += "<div class='posted-author'>";
+                //contentPost += " <h6 class='author'><a href='profile.html'>" + response.User.FirstName + " " + response.User.LastName + "</a></h6>";
+                //contentPost += "<span class='post-time'>" + response.Time + "</span>";
+                //contentPost += "</div>";
+
+                //contentPost += " <div class='post-settings-bar'>";
+                //contentPost += "<span></span>";
+                //contentPost += "<span></span>";
+                //contentPost += "<span></span>";
+                //contentPost += " <div class='post-settings arrow-shape'>";
+                //contentPost += "<input hidden id='idPost' />";
+                //contentPost += " <ul>";
+                //contentPost += " <li><a href='javascript:;'>Edit</a></li>";
+                //contentPost += "<li><a href='javascript:;'>Delete</a></li>";
+                //contentPost += "</ul>";
+                //contentPost += "</div>";
+                //contentPost += "</div>";
+                //contentPost += "</div>";
+
+                //contentPost += "<div class='post-content'>";
+                //contentPost += "<p class='post-desc' id='content'> " + response.Content + " </p>";
+                //if (response.ContentType == 0) {
+                //    contentPost += "<div class='post-thumb-gallery'>";
+                //    contentPost += "<img src='" + response.Image + "' alt='post image' />";
+                //    contentPost += "</div>";
+                //}
+                //contentPost += "<div class='post-meta'>";
+                //contentPost += "<ul class='comment-share-meta'>";
+                //contentPost += "<li>";
+                //contentPost += "<button class='post-share'>";
+                //contentPost += "<i class='bi bi-share'></i>";
+                //contentPost == "</button>";
+                //contentPost += "</li>";
+                //contentPost += "</ul>";
+                //contentPost += "</div>";
+
+                //contentPost += "</div>";
+                //$("#content-page").append(contentPost);
+
+                setTimeout(() => {
+                    $.toast({
+                        type: "success",
+                        title: "",
+                        subtitle: 'Success !',
+                        content: "",
+                        delay: 3000
+                    });
+                }, 1000);
+                $("#textbox").modal("hide");
+            }
+        });
+
+        request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
+</script>

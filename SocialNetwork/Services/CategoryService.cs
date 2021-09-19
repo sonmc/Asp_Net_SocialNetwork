@@ -12,5 +12,18 @@ namespace SocialNetwork.Services
         {
             return db.Categories.ToList();
         }
+        public void Delete(int id)
+        {
+            Category cate = db.Categories.Find(id);
+            db.Categories.Remove(cate);
+            db.SaveChanges();
+        }
+        public void Create(string name)
+        {
+            Category ca = new Category();
+            ca.Name = name;
+            db.Categories.Add(ca);
+            db.SaveChanges();
+        }
     }
 }

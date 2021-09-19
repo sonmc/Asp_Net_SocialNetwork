@@ -36,8 +36,7 @@
                                     <td>@item.Email</td>
                                     <td>@item.Address</td>
                                     <td>@item.Age</td>
-                                    <td>
-                                        <a onclick="openModalUpdate('EDIT',@item)" class="btn btn-primary btn-custom">Update</a>
+                                    <td> 
                                         @if (item.IsActive)
                                         {
                                             <a href="@Url.Action("ChangeStatus","Admin", new { userId = item.Id , isActive = false})" class="btn btn-danger btn-custom">Deactive</a>
@@ -67,7 +66,17 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form> 
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <input type="text" class="form-control" id="lastName" placeholder="First name">
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" id="firstName" placeholder="Last name">
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <input type="email" class="form-control" id="email" placeholder="Email address">
                     </div>
@@ -96,7 +105,10 @@
         const user = {
             email: document.getElementById("email").value,
             isAdmin: document.getElementById("isAdmin").checked,
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
         }
+
         var request = $.ajax({
             url: "https://localhost:44399/Admin/CreateUser",
             method: "POST",

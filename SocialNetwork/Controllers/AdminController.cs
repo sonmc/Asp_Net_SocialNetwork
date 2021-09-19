@@ -11,6 +11,7 @@ namespace SocialNetwork.Controllers
     {
         private UserService userService = new UserService();
         private NewService newService = new NewService();
+        private CategoryService categoryService = new CategoryService();
 
         [HttpGet]
         public ActionResult Login()
@@ -19,12 +20,12 @@ namespace SocialNetwork.Controllers
         }
         public ActionResult Index()
         {
-            var currentUser = Session["CurrentUser"];
+            var currentUser = Session["CurrentUser"] as User;
             if (currentUser == null)
             {
                 return RedirectToAction("Login");
             }
-            List<User> users = userService.Get();
+            List<User> users = userService.GetAllUser(currentUser.Id);
             ViewBag.CurrentUser = currentUser;
             return View(users);
         }
@@ -78,11 +79,13 @@ namespace SocialNetwork.Controllers
             userService.UpdateUser(user);
             return RedirectToAction("Index");
         } 
-        public JsonResult CreateUser(  string email, bool isAdmin )
+        public JsonResult CreateUser(string email, bool isAdmin , string firstName, string lastName)
         {
             var user = new User()
             {
                 Email = email,
+                FirstName = firstName,
+                LastName = lastName,
                 Role = isAdmin ? Common.ADMIN_ROLE : Common.USER_ROLE,
                 Password = "abc@123",
                 IsActive = true
@@ -94,6 +97,27 @@ namespace SocialNetwork.Controllers
         {
             newService.Delete(newId);
             return RedirectToAction("New");
+        }
+        public ActionResult CategoryList()
+        {
+            var currentUser = Session["CurrentUser"];
+            if (currentUser == null)
+            {
+                return RedirectToAction("Login");
+            } 
+            ViewBag.CurrentUser = currentUser;
+            var categories =  categoryService.Get();
+            return View(categories);
+        }
+        public ActionResult RemoveCategory(int id)
+        {
+            categoryService.Delete(id);
+            return RedirectToAction("CategoryList");
+        }
+        public JsonResult CreateCategory(string name)
+        {
+            categoryService.Create(name);
+            return Json("success");
         }
     }
 }

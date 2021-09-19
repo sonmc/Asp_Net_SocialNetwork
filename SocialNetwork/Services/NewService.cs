@@ -1,4 +1,5 @@
-﻿using SocialNetwork.DAL;
+﻿using SocialNetwork.Constant;
+using SocialNetwork.DAL;
 using SocialNetwork.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace SocialNetwork.Services
         private DataContext db = new DataContext();
         public List<New> GetByCategoryId(int? categoryId)
         {
-            List<New> news = db.News.Where(n => n.CategoryId == categoryId && n.IsApprove).ToList();
+            List<New> news = db.News.Where(n => n.CategoryId == categoryId && n.IsApprove).OrderBy(x => x.DateCreated).ToList();
             return news;
         }
         public List<New> Get()
@@ -44,16 +45,19 @@ namespace SocialNetwork.Services
             return newObj;
         }
 
-        public New Create(int userId, string content)
+        public New Create(int userId, string content, int categoryId, string img)
         {
             var obj = new New();
             obj.UserId = userId;
+            obj.CategoryId = categoryId;
             obj.Content = content;
-            obj.DateCreated = DateTime.Now.ToString();
+            obj.Image = img != "" ? img : "";
+            obj.ContentType = img != "" ? Common.IMAGE_TYPE : Common.TEXT_TYPE;
+            obj.DateCreated = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
             obj.User = db.Users.Where(x => x.Id == userId).FirstOrDefault();
-            db.News.Add(obj);
+            New dataAdded = db.News.Add(obj);
             db.SaveChanges();
-            return obj;
+            return dataAdded;
         }
 
         public bool UpdateNew(New newObj)

@@ -1,4 +1,8 @@
 ﻿
+using System;
+using System.Globalization;
+using System.IO;
+using System.Web;
 using System.Web.Mvc;
 using SocialNetwork.Constant;
 using SocialNetwork.Entities;
@@ -34,7 +38,7 @@ namespace SocialNetwork.Controllers
         [HttpGet]
         public ActionResult Index(int? categoryId = 1)
         {
-            var currentUser = Session["User"];
+            var currentUser = Session["User"] as User;
 
             if (currentUser == null)
             {
@@ -45,16 +49,43 @@ namespace SocialNetwork.Controllers
             foreach (var item in news)
             {
                 item.User = userService.GetUserById(item.UserId);
-                item.Time = "One day ago";
+                CultureInfo culture = new CultureInfo("en-US");
+                var datetimeCreated = Convert.ToDateTime(item.DateCreated, culture);
+                item.Time = Common.GetTime(datetimeCreated);
             }
-            ViewBag.FriendAround = userService.Get();
+            ViewBag.FriendRequest = userService.GetFriendsRequest(currentUser.Id);
+            ViewBag.Friends = userService.GetFriends(currentUser.Id);
+            ViewBag.FriendAround = userService.GetUser(currentUser.Id);
             ViewBag.Categories = categoryService.Get();
             return View(news);
         }
 
-        public JsonResult CreatePost(int userId, string content)
+        [HttpPost]
+        public JsonResult UploadFile()
         {
-            New obj = newService.Create(userId, content);
+            string fileName = "";
+            bool isFileUploaded = false;
+            try
+            {
+                var file = Request.Files[0];
+                if (file.ContentLength > 0)
+                {
+                    fileName = Path.GetFileName(file.FileName);
+                    string _path = Path.Combine(Server.MapPath("~/UploadedFiles"), fileName);
+                    file.SaveAs(_path);
+                    isFileUploaded = true;
+                }
+            }
+            catch
+            {
+                isFileUploaded = false;
+                fileName = "";
+            }
+            return Json(new { status = isFileUploaded, data = fileName });
+        }
+        public JsonResult CreatePost(int userId, string content, int categoryId, string img)
+        {
+            New obj = newService.Create(userId, content, categoryId, img);
             return Json(obj);
         }
 
@@ -76,5 +107,29 @@ namespace SocialNetwork.Controllers
             var newObj = newService.GetById(id);
             return View(newObj);
         }
+        [HttpPost]
+        public JsonResult AddFriend(int toId)
+        {
+            var currentUser = Session["User"] as User;
+            var friendAdded = userService.AddFriend(currentUser.Id, toId);
+            return Json(friendAdded);
+        }
+
+        [HttpPost]
+        public JsonResult UserFriendAccept(int friendId)
+        {
+            var currentUser = Session["User"] as User;
+            var friendAdded = userService.AcceptFriend(friendId, currentUser.Id);
+            return Json(friendAdded);
+        }
+
+        [HttpPost]
+        public JsonResult UserFriendRemove(int friendId)
+        {
+            var currentUser = Session["User"] as User;
+            var isRemoved = userService.RemoveFriendRequest(friendId, currentUser.Id);
+            return Json(isRemoved);
+        }
+        
     }
 }

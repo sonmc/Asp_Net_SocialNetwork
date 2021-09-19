@@ -32,6 +32,11 @@
                     <span>Users Management</span>
                 </a>
             </li>
+            <li class="nav-item" id="category">
+                <a class="nav-link" href="@Url.Action("CategoryList","Admin")">
+                    <span>Category Management</span>
+                </a>
+            </li>
         </ul> 
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
@@ -85,11 +90,17 @@
         currentPage = currentPage.split("/")[currentPage.split("/").length - 1];
         if (currentPage == "Index") {
             $("#user").addClass("active");
-            $("#new").removeClass("active"); 
-        } else {
+            $("#new").removeClass("active");
+            $("#category").removeClass("active");
+        } else if (currentPage == "New") {
             $("#new").addClass("active");
-            $("#user").removeClass("active"); 
-        } 
+            $("#user").removeClass("active");
+            $("#category").removeClass("active");
+        } else {
+            $("#category").addClass("active");
+            $("#new").removeClass("active");
+            $("#user").removeClass("active");
+        }
 
     </script>
 </body>

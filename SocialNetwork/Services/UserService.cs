@@ -8,7 +8,7 @@ namespace SocialNetwork.Services
 {
     public class UserService
     {
-        private DataContext db = new DataContext();
+        static DataContext db = new DataContext();
         public User Login(string email, string pwd)
         {
             foreach (var item in db.Users)
@@ -25,9 +25,80 @@ namespace SocialNetwork.Services
             User user = db.Users.Where(x => x.Id == id).FirstOrDefault();
             return user;
         }
-        public List<User> Get()
+        public List<User> GetUser(int curentUserId)
         {
-            return db.Users.Where(u => u.Role != 0).ToList();
+            var users = db.Users.Where(u => u.Role != 0 && u.Id != curentUserId && u.IsActive).ToList();
+            var notFriend = IsNotFriend(users, curentUserId);
+            return notFriend;
+        }
+
+        public static List<User> IsNotFriend(List<User> users, int curentUserId)
+        {
+            var notFriend = new List<User>();
+            var listFriend = db.UserFriend.Where(x => x.FromUserId == curentUserId).ToList();
+            foreach (var item in users)
+            {
+                foreach (var friend in listFriend)
+                {
+                    if (friend.FromUserId != item.Id && friend.ToUserId != item.Id && friend.Status < 3)
+                    {
+                        notFriend.Add(item);
+                    }
+                }
+            }
+            return notFriend;
+        }
+        public List<User> GetAllUser(int curentUserId)
+        {
+            return db.Users.Where(u => u.Role != 0 && u.Id != curentUserId).ToList();
+        }
+        public Friend AddFriend(int fromId, int idFriend)
+        {
+            var friend = new Friend();
+            friend.FromUserId = fromId;
+            friend.ToUserId = idFriend;
+            friend.Status = 2;
+            var friendAdded = db.UserFriend.Add(friend);
+            db.SaveChanges();
+            return friendAdded;
+        }
+        public List<User> GetFriendsRequest(int toUserId)
+        {
+            var listFriendRequest = new List<User>();
+            var friends = db.UserFriend.Where(x => x.ToUserId == toUserId && x.Status == 2).ToList();
+            foreach (var item in friends)
+            {
+                var user = db.Users.Where(x => x.Id == item.FromUserId).FirstOrDefault();
+                listFriendRequest.Add(user);
+            }
+            return listFriendRequest;
+        }
+        public List<Friend> GetFriends(int currentUserId)
+        {
+            var friends = db.UserFriend.Where(x => (x.FromUserId == currentUserId || x.ToUserId == currentUserId) && x.Status == 3).ToList();
+            foreach (var item in friends)
+            {
+                var userId = item.ToUserId == currentUserId ? item.FromUserId : item.ToUserId;
+                item.UserFriend = db.Users.Where(x => x.Id == userId).FirstOrDefault();
+            }
+            return friends;
+        }
+        public bool AcceptFriend(int fromId, int myId)
+        {
+            bool isAccepted = false;
+            try
+            {
+                var friendPending = db.UserFriend.Where(x => x.FromUserId == fromId && x.ToUserId == myId).FirstOrDefault();
+                friendPending.Status = 3;
+                db.Entry(friendPending).State = EntityState.Modified;
+                db.SaveChanges();
+                isAccepted = true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isAccepted;
         }
         public bool UpdateUser(User user)
         {
@@ -38,7 +109,7 @@ namespace SocialNetwork.Services
                 db.SaveChanges();
                 isUpdated = true;
             }
-            catch (Exception ex) {  }
+            catch (Exception ex) { }
             return isUpdated;
         }
 
@@ -48,6 +119,20 @@ namespace SocialNetwork.Services
             db.SaveChanges();
             return added;
         }
-        
+        public bool RemoveFriendRequest(int fromUserId, int toUserId)
+        {
+            bool isRemoved = false;
+            try
+            {
+                Friend fn = db.UserFriend.Where(x => x.FromUserId == fromUserId && x.ToUserId == toUserId).FirstOrDefault();
+                db.UserFriend.Remove(fn);
+                isRemoved = true;
+            }
+            catch (Exception)
+            {
+                isRemoved = false;
+            }
+            return isRemoved;
+        }
     }
 }

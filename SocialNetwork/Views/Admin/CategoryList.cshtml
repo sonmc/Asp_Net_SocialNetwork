@@ -1,0 +1,91 @@
+﻿
+@model IEnumerable<SocialNetwork.Entities.Category>
+@{
+    Layout = "~/Views/Shared/templ/_Layout.cshtml";
+}
+
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Category Management</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <button class="btn btn-success" onclick="openModalAdd()">Add</button>
+                </div>
+                <div class="table-responsive p-3">
+                    <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>No.</th>
+                                <th>Name</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.Name</td>
+                                    <td>
+                                        <a href="@Url.Action("RemoveCategory","Admin", new { id = item.Id })" class="btn btn-danger btn-custom btn-sm">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalAddCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Create</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form> 
+                    <div class="form-group">
+                        <input type="text" id="name" class="form-control"  placeholder="Enter category name">
+                    </div> 
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" onclick="create()" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModalAdd() {
+        $('#modalAddCategory').modal("show");
+    }
+    function create() {
+        const name = document.getElementById("name").value;
+        debugger
+        var request = $.ajax({
+            url: "https://localhost:44399/Admin/CreateCategory",
+            method: "POST",
+            data: { name}
+        });
+
+        request.done(function (response) {
+            $('#modalAddCategory').modal("hide");
+            window.location.href = "/Admin/CategoryList";
+        });
+
+        request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
+</script>
