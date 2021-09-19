@@ -301,8 +301,6 @@
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\vendor.min.js" />
     <Content Include="Scripts\ruang-admin.js" />
-    <Content Include="UploadedFiles\anhdep6.jpg" />
-    <Content Include="UploadedFiles\hinh-anh-thien-nhien-dep.jpg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -322,6 +320,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="UploadedFiles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\fa-brands-400.eot" />

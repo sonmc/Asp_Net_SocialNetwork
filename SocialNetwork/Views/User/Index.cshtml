@@ -260,39 +260,41 @@
                                 <h5 class="widget-title">Friend requests</h5>
                                 <div class="widget-body">
                                     <ul class="like-page-list-wrapper">
+                                        @{var index = 0;}
                                         @foreach (var item in @ViewBag.FriendRequest)
                                         {
-                                            <li class="unorder-list">
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        @if (@item.Avatar != null)
-                                                        {
-                                                            <figure class="profile-thumb-small">
-                                                                <img src="@item.Avatar" alt="profile picture">
-                                                            </figure>
-                                                        }
-                                                        else
-                                                        {
-                                                            <figure class="profile-thumb-small">
-                                                                <img src="~/imgs/avatar_default.png" />
-                                                            </figure>
-                                                        }
-                                                    </a>
-                                                </div>
+                                        <li class="unorder-list" id="acceptFriendForm_@index">
+                                            <div class="profile-thumb">
+                                                <a href="#">
+                                                    @if (@item.Avatar != null)
+                                                    {
+                                                        <figure class="profile-thumb-small">
+                                                            <img src="@item.Avatar" alt="profile picture">
+                                                        </figure>
+                                                    }
+                                                    else
+                                                    {
+                                                        <figure class="profile-thumb-small">
+                                                            <img src="~/imgs/avatar_default.png" />
+                                                        </figure>
+                                                    }
+                                                </a>
+                                            </div>
 
-                                                <div class="unorder-list-info">
-                                                    <h3 class="list-title"><a href="#">@item.FirstName @item.LastName </a> Sent you a friend request</h3>
-                                                    <p class="list-subtitle">
-                                                        <input hidden id="friendId" value="@item.Id" />
-                                                        <a onclick="acceptFriend()" style="padding-right: 10px" class="">Accept</a>
-                                                        <a onclick="removeFriend()" class="">Remove</a>
-                                                    </p>
-                                                </div>
-                                                <button class="like-button">
-                                                    <img class="heart" src="assets/images/icons/heart.png" alt="">
-                                                    <img class="heart-color" src="assets/images/icons/heart-color.png" alt="">
-                                                </button>
-                                            </li>
+                                            <div class="unorder-list-info">
+                                                <h3 class="list-title"><a href="#">@item.FirstName @item.LastName </a> Sent you a friend request</h3>
+                                                <p class="list-subtitle">
+                                                    <input hidden id="friendId" value="@item.Id" />
+                                                    <a onclick="acceptFriend(@index)" style="padding-right: 10px" class="">Accept</a>
+                                                    <a onclick="removeFriend()" class="">Remove</a>
+                                                </p>
+                                            </div>
+                                            <button class="like-button">
+                                                <img class="heart" src="assets/images/icons/heart.png" alt="">
+                                                <img class="heart-color" src="assets/images/icons/heart-color.png" alt="">
+                                            </button>
+                                            @{ index++;}
+                                        </li>
                                         }
                                     </ul>
                                 </div>
@@ -301,34 +303,37 @@
                                 <h5 class="widget-title">Do you know ?</h5>
                                 <div class="widget-body">
                                     <ul class="like-page-list-wrapper">
+                                        @{ var j = 0;}
                                         @foreach (var item in @ViewBag.FriendAround)
                                         {
-                                            <li class="unorder-list">
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        @if (@item.Avatar != null)
-                                                        {
-                                                            <figure class="profile-thumb-small">
-                                                                <img src="@item.Avatar" alt="profile picture">
-                                                            </figure>
-                                                        }
-                                                        else
-                                                        {
-                                                            <figure class="profile-thumb-small">
-                                                                <img src="~/imgs/avatar_default.png" />
-                                                            </figure>
-                                                        }
-                                                    </a>
-                                                </div>
 
-                                                <div class="unorder-list-info">
-                                                    <h3 class="list-title"><a href="#">@item.FirstName @item.LastName</a></h3>
-                                                </div>
-                                                <input hidden id="userId" value="@item.Id" />
-                                                <button class="like-button" id="add-friend-path" onclick="addFriend()">
-                                                    <img src="~/imgs/heart-color.png" />
-                                                </button>
-                                            </li>
+                                        <li class="unorder-list" id="addFriendForm_@j">
+                                            <div class="profile-thumb">
+                                                <a href="#">
+                                                    @if (@item.Avatar != null)
+                                                    {
+                                                        <figure class="profile-thumb-small">
+                                                            <img src="@item.Avatar" alt="profile picture">
+                                                        </figure>
+                                                    }
+                                                    else
+                                                    {
+                                                        <figure class="profile-thumb-small">
+                                                            <img src="~/imgs/avatar_default.png" />
+                                                        </figure>
+                                                    }
+                                                </a>
+                                            </div>
+
+                                            <div class="unorder-list-info">
+                                                <h3 class="list-title"><a href="#">@item.FirstName @item.LastName</a></h3>
+                                            </div>
+                                            <input hidden id="userId" value="@item.Id" />
+                                            <button class="like-button" id="add-friend-path" onclick="addFriend(@j)">
+                                                <img src="~/imgs/heart-color.png" />
+                                            </button>
+                                            @{ j++;}
+                                        </li> 
                                         }
                                     </ul>
                                 </div>
@@ -672,12 +677,12 @@
                 $("#post_detail").modal("show");
                 $("#contentShared").text(response.Content);
                 if (response.Image) {
-                    $('#imgShared').attr('src', "/UploadedFiles/"+  response.Image);
+                    $('#imgShared').attr('src', "/UploadedFiles/" + response.Image);
 
                 } else {
                     $('#formContainerImg').css('display', 'none');
                 }
-               
+
             }
         });
 
@@ -713,7 +718,7 @@
             alert("Request failed: " + textStatus);
         });
     }
-    function acceptFriend() {
+    function acceptFriend(index) {
         let id = $("#friendId").val();
 
         var request = $.ajax({
@@ -733,7 +738,9 @@
                         delay: 3000
                     });
                 }, 1000);
+                $("#acceptFriendForm_" + index).css("display", "none");
                 $("#share_post").modal("hide");
+                window.location.reload();
             }
         });
 
@@ -741,7 +748,7 @@
             alert("Request failed: " + textStatus);
         });
     }
-    function removeFriend() {
+    function removeFriend(index) {
         let id = $("#friendId").val();
 
         var request = $.ajax({
@@ -762,7 +769,7 @@
                         delay: 3000
                     });
                 }, 1000);
-                $("#textbox").modal("hide");
+                $("#acceptFriendForm_" + index).css("display", "none");
             }
         });
 
@@ -770,7 +777,7 @@
             alert("Request failed: " + textStatus);
         });
     }
-    function addFriend() {
+    function addFriend(index) {
         let id = $("#userId").val();
 
         var request = $.ajax({
@@ -791,6 +798,7 @@
                         delay: 3000
                     });
                 }, 1000);
+                $("#addFriendForm_" + index).css("display", "none");
                 $("#textbox").modal("hide");
             }
         });

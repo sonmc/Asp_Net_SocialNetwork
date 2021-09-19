@@ -37,7 +37,7 @@ namespace SocialNetwork.Services
         public static List<User> IsNotFriend(List<User> users, int curentUserId)
         {
             var notFriend = new List<User>();
-            var listFriend = db.UserFriend.Where(x => x.FromUserId == curentUserId).ToList();
+            var listFriend = db.UserFriend.Where(x => (x.FromUserId == curentUserId || x.ToUserId == curentUserId) && (x.Status == 3 || x.Status == 2)).ToList();
             foreach (var item in users)
             {
                 if (listFriend.Count == 0)
